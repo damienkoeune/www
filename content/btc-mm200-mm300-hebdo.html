@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BTC hebdomadaire — MM 200 et MM 300 semaines</title>
+<style>
+  :root { color-scheme: light dark; }
+  body {
+    margin: 0; padding: 32px 20px 48px;
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--page); color: var(--text-primary);
+  }
+  .viz-root {
+    --page:           #f9f9f7;
+    --surface-1:      #fcfcfb;
+    --text-primary:   #0b0b0b;
+    --text-secondary: #52514e;
+    --text-muted:     #898781;
+    --grid:           #e1e0d9;
+    --axis:           #c3c2b7;
+    --border:         rgba(11,11,11,0.10);
+    --series-price:   #2a78d6;
+    --series-mm200:   #eb6834;
+    --series-mm300:   #1baf7a;
+    --band:           rgba(137,135,129,0.16);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:where(:not([data-theme="light"])) .viz-root {
+      --page:           #0d0d0d;
+      --surface-1:      #1a1a19;
+      --text-primary:   #ffffff;
+      --text-secondary: #c3c2b7;
+      --text-muted:     #898781;
+      --grid:           #2c2c2a;
+      --axis:           #383835;
+      --border:         rgba(255,255,255,0.10);
+      --series-price:   #3987e5;
+      --series-mm200:   #d95926;
+      --series-mm300:   #199e70;
+      --band:           rgba(137,135,129,0.22);
+    }
+  }
+  :root[data-theme="dark"] .viz-root {
+    --page:           #0d0d0d;
+    --surface-1:      #1a1a19;
+    --text-primary:   #ffffff;
+    --text-secondary: #c3c2b7;
+    --text-muted:     #898781;
+    --grid:           #2c2c2a;
+    --axis:           #383835;
+    --border:         rgba(255,255,255,0.10);
+    --series-price:   #3987e5;
+    --series-mm200:   #d95926;
+    --series-mm300:   #199e70;
+    --band:           rgba(137,135,129,0.22);
+  }
+
+  .viz-root { max-width: 1000px; margin: 0 auto; background: var(--page); }
+  h1 { font-size: 21px; font-weight: 600; margin: 0 0 4px; letter-spacing: -0.01em; }
+  .sub { font-size: 14px; color: var(--text-secondary); margin: 0 0 20px; line-height: 1.5; }
+  .sub code { font-size: 12.5px; }
+
+  .controls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 14px; }
+  button {
+    font: inherit; font-size: 13px; padding: 6px 12px; border-radius: 7px;
+    border: 1px solid var(--border); background: var(--surface-1);
+    color: var(--text-secondary); cursor: pointer;
+  }
+  button:hover { color: var(--text-primary); }
+  button[aria-pressed="true"] { color: var(--text-primary); font-weight: 600; border-color: var(--axis); }
+  .spacer { flex: 1 1 auto; }
+
+  .card {
+    background: var(--surface-1); border: 1px solid var(--border);
+    border-radius: 12px; padding: 14px 14px 6px; position: relative;
+  }
+  svg { display: block; width: 100%; height: auto; overflow: visible; }
+  text { font-family: inherit; }
+  .tick { font-size: 11px; fill: var(--text-muted); }
+  .dlabel { font-size: 11.5px; font-weight: 600; fill: var(--text-primary); }
+  .dnote  { font-size: 11px; fill: var(--text-secondary); }
+
+  .legend { display: flex; flex-wrap: wrap; gap: 18px; margin: 14px 2px 8px; font-size: 13px; color: var(--text-secondary); }
+  .legend span { display: inline-flex; align-items: center; gap: 7px; }
+  .key { width: 16px; height: 3px; border-radius: 2px; flex: none; }
+  .key.sq { width: 14px; height: 12px; border-radius: 3px; }
+
+  .tip {
+    position: absolute; pointer-events: none; opacity: 0; transition: opacity .08s;
+    background: var(--surface-1); border: 1px solid var(--border);
+    border-radius: 9px; padding: 9px 11px; font-size: 12.5px; line-height: 1.6;
+    box-shadow: 0 4px 16px rgba(0,0,0,.16); min-width: 172px; z-index: 5;
+  }
+  .tip b { display: block; font-size: 12px; color: var(--text-secondary); font-weight: 600; margin-bottom: 4px; }
+  .tip .row { display: flex; justify-content: space-between; gap: 14px; }
+  .tip .row i { font-style: normal; display: inline-flex; align-items: center; gap: 6px; color: var(--text-secondary); }
+  .tip .row em { font-style: normal; font-variant-numeric: tabular-nums; color: var(--text-primary); }
+  .tip .band { margin-top: 5px; padding-top: 5px; border-top: 1px solid var(--border); color: var(--text-secondary); font-size: 12px; }
+
+  table { border-collapse: collapse; width: 100%; font-size: 13px; margin-top: 8px; }
+  th, td { text-align: right; padding: 7px 10px; border-bottom: 1px solid var(--grid); font-variant-numeric: tabular-nums; }
+  th:first-child, td:first-child { text-align: left; font-variant-numeric: normal; }
+  th { color: var(--text-secondary); font-weight: 600; }
+  caption { text-align: left; font-size: 13px; color: var(--text-secondary); padding: 6px 0 10px; }
+  .hidden { display: none; }
+  footer { margin-top: 18px; font-size: 12.5px; color: var(--text-muted); line-height: 1.6; }
+</style>
+</head>
+<body>
+<div class="viz-root">
+
+  <h1>Bitcoin, clôtures hebdomadaires et moyennes mobiles 200 / 300 semaines</h1>
+  <p class="sub">
+    693 semaines, du 22 avril 2013 au 27 juillet 2026 — échelle logarithmique.
+    Source : CoinGecko <code>coins/bitcoin/market_chart</code> (<code>days=max</code>), agrégé en semaines lundi→dimanche.
+    La MM 300 n'existe qu'à partir de janvier 2019.
+  </p>
+
+  <div class="controls">
+    <button data-range="all" aria-pressed="true">Tout l'historique</button>
+    <button data-range="2019" aria-pressed="false">Depuis 2019</button>
+    <button data-range="3y" aria-pressed="false">3 ans</button>
+    <span class="spacer"></span>
+    <button id="tableBtn" aria-pressed="false">Voir le tableau</button>
+  </div>
+
+  <div class="card" id="card">
+    <svg id="chart" viewBox="0 0 920 470" role="img"
+         aria-label="Cours hebdomadaire du bitcoin comparé à ses moyennes mobiles 200 et 300 semaines, échelle logarithmique."></svg>
+    <div class="tip" id="tip"></div>
+  </div>
+
+  <div class="legend">
+    <span><i class="key" style="background:var(--series-price)"></i>Cours BTC (clôture hebdo)</span>
+    <span><i class="key" style="background:var(--series-mm200)"></i>MM 200 semaines</span>
+    <span><i class="key" style="background:var(--series-mm300)"></i>MM 300 semaines</span>
+    <span><i class="key sq" style="background:var(--band)"></i>Zone entre les deux moyennes</span>
+  </div>
+
+  <div id="tableView" class="hidden">
+    <table>
+      <caption>Les 8 épisodes où la clôture hebdomadaire s'est inscrite dans la bande MM200–MM300 (41 semaines sur 394, soit 10,4 %). Performances mesurées depuis la première semaine de l'épisode.</caption>
+      <thead>
+        <tr><th>Épisode</th><th>Sem.</th><th>Cours ($)</th><th>+26 sem.</th><th>+52 sem.</th><th>+104 sem.</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>09/03/2020</td><td>1</td><td>5 214</td><td>+100 %</td><td>+1 076 %</td><td>+646 %</td></tr>
+        <tr><td>13/06 → 18/07/2022</td><td>6</td><td>19 047</td><td>−12 %</td><td>+39 %</td><td>+248 %</td></tr>
+        <tr><td>15/08 → 31/10/2022</td><td>12</td><td>21 175</td><td>+16 %</td><td>+23 %</td><td>+181 %</td></tr>
+        <tr><td>09/01 → 06/03/2023</td><td>9</td><td>21 019</td><td>+44 %</td><td>+104 %</td><td>+350 %</td></tr>
+        <tr><td>05/06 → 12/06/2023</td><td>2</td><td>25 858</td><td>+69 %</td><td>+168 %</td><td>+309 %</td></tr>
+        <tr><td>14/08 → 09/10/2023</td><td>9</td><td>26 105</td><td>+98 %</td><td>+128 %</td><td>+350 %</td></tr>
+        <tr><td>01/06/2026</td><td>1</td><td>60 862</td><td>—</td><td>—</td><td>—</td></tr>
+        <tr><td>22/06/2026</td><td>1</td><td>59 943</td><td>—</td><td>—</td><td>—</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <footer>
+    Lecture : les cinq épisodes de juin 2022 à octobre 2023 relèvent du <em>même</em> creux de cycle — l'échantillon
+    réel est d'un seul bear market, dans lequel la bande n'a pas tenu (encore −22 % après l'entrée du 15 août 2022,
+    et neuf clôtures sous la MM 300 jusqu'à −10 % en dessous). Bon indicateur de valorisation, approximatif pour le timing.
+  </footer>
+</div>
+
+<script>
+const START = Date.UTC(2013, 3, 22);
+const C = [135,117,115,121,135,121,108,100,107,95,68,96,89,94,105,104,114,122,138,122,130,128,140,128,135,172,190,212,313,488,764,1033,743,855,650,726,919,867,838,854,836,672,614,623,561,636,630,568,470,461,415,497,438,434,436,444,569,640,650,583,595,598,631,627,621,590,586,589,495,508,480,481,475,397,376,325,374,387,350,324,363,388,367,376,374,350,320,316,261,267,209,254,226,223,233,236,258,275,285,268,242,260,236,223,219,240,240,236,241,230,224,234,244,248,271,310,273,292,282,264,258,227,228,239,231,231,233,239,248,262,285,325,372,320,323,371,394,436,441,424,430,447,386,403,364,376,404,439,433,405,412,412,425,418,421,428,460,453,459,458,439,525,574,672,764,629,665,650,678,661,624,593,571,581,574,609,605,609,599,610,615,640,650,697,712,702,728,728,766,768,788,894,998,908,822,919,914,1017,1001,1054,1181,1276,1231,1023,954,1098,1188,1186,1248,1350,1558,1768,2054,2219,2556,3014,2577,2607,2519,2519,1927,2732,2740,3190,4023,4001,4116,4632,4133,3553,3672,4348,4562,5684,6003,6124,7416,5867,8011,9343,11257,15809,19424,14451,14840,17040,14477,11704,11666,8995,8575,11007,9743,11356,8891,8063,8621,6975,6884,7898,8878,9250,9766,8481,8181,7329,7568,7415,6479,6169,6366,6760,6246,7379,8192,7009,6205,6382,6736,7211,6181,6530,6747,6606,6589,6315,6533,6457,6388,6430,5599,3896,4190,3425,3222,3961,3778,3787,3598,3675,3564,3487,3667,3623,4115,3820,3942,4008,4009,4104,5042,5073,5308,5257,5804,7258,7301,8038,8554,7943,8819,10705,11973,11279,11419,10774,9448,10791,11328,10224,10145,9607,10462,10350,9997,8225,8140,8308,7950,9217,9303,8810,8496,7310,7556,7494,7082,7142,7308,7351,8012,8907,8349,9363,9891,9894,9659,8553,8902,5214,6146,6255,6859,6879,7243,7539,8966,9567,9375,9170,9663,9663,9469,9360,9014,9133,9234,9168,9692,11812,11739,11865,11676,11481,10178,10439,11084,10743,10547,11287,11366,13106,13779,14818,16096,18690,17719,19139,18807,23864,26476,32164,40297,36255,32068,34200,39279,46941,56378,46654,49019,61315,58376,55832,57060,59979,60274,50133,57813,58772,46781,37520,34775,35547,35666,35582,32024,34730,33705,31589,34214,41754,44648,47089,48934,48937,50013,45196,48267,42857,47778,55125,61166,61572,61837,61661,64660,60083,54533,49162,49242,46970,50663,47816,41757,43227,35180,38232,41494,42255,40193,39090,39463,38904,42202,44511,45842,42796,40450,39562,37821,35573,30189,29492,29088,29872,28374,19047,21526,19268,21590,21193,22506,23653,22985,24434,21175,20070,19815,21707,20132,18940,19314,19418,19073,19204,20801,21283,16798,16713,16456,16923,17125,16806,16849,16541,16951,21019,22771,23022,23340,21889,24643,23157,22348,20522,27108,27670,28499,27968,30312,27862,29218,28888,26798,27094,26848,27066,25858,26501,30538,30584,30264,30298,29710,29357,29047,29412,26105,26002,25854,25889,26558,26574,26970,27978,26863,29920,34093,35048,37123,36582,37810,39482,43745,42247,43752,42221,43956,42848,41626,42120,42977,47769,51685,51553,62068,68508,65292,64286,69702,69001,64405,64894,63517,63820,60777,66913,69268,67704,69315,66190,64240,60864,58230,59153,67206,68055,60739,60888,59431,64157,58960,54151,60003,63403,65934,62092,63208,68389,67018,69299,76630,90606,97679,96513,99782,101367,97203,95185,98257,94560,104335,104796,100675,96558,97570,96564,86005,86143,84392,83793,82679,83596,85305,85127,94644,95923,104631,103212,107831,104688,105681,105483,101533,107332,108217,117419,117902,117960,112555,116510,117501,115360,108782,110209,115971,115716,109655,122381,110853,107156,111620,110014,102290,95508,84683,90841,89245,90257,88348,87807,90594,90442,95100,89171,78726,69297,69766,67978,67008,67271,71217,68734,66321,67304,73054,75728,77619,78655,80678,78135,76673,73751,60862,64378,64240,59943,63094,63893,64793,64309,65203];
+
+const sma = (n) => {
+  const out = new Array(C.length).fill(null);
+  let sum = 0;
+  for (let i = 0; i < C.length; i++) {
+    sum += C[i];
+    if (i >= n) sum -= C[i - n];
+    if (i >= n - 1) out[i] = sum / n;
+  }
+  return out;
+};
+const M200 = sma(200), M300 = sma(300);
+const D = C.map((c, i) => ({
+  t: START + i * 604800000, c,
+  m2: M200[i], m3: M300[i],
+  band: M200[i] !== null && M300[i] !== null && c < Math.max(M200[i], M300[i]) && c > Math.min(M200[i], M300[i])
+}));
+
+const NS = 'http://www.w3.org/2000/svg';
+const W = 920, H = 470, ML = 56, MR = 74, MT = 16, MB = 30;
+const PW = W - ML - MR, PH = H - MT - MB;
+const fmtEUR = n => Math.round(n).toLocaleString('fr-FR').replace(/ | /g, ' ');
+const fmtWeek = t => new Date(t).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric', timeZone: 'UTC' });
+
+let view = D, xs = null, tipIdx = -1;
+
+function el(tag, attrs, parent) {
+  const n = document.createElementNS(NS, tag);
+  for (const k in attrs) n.setAttribute(k, attrs[k]);
+  if (parent) parent.appendChild(n);
+  return n;
+}
+
+function draw(range) {
+  const svg = document.getElementById('chart');
+  svg.textContent = '';
+  view = range === 'all' ? D
+       : range === '2019' ? D.filter(d => d.t >= Date.UTC(2019, 0, 1))
+       : D.slice(-157);
+
+  const vals = [];
+  for (const d of view) { vals.push(d.c); if (d.m2) vals.push(d.m2); if (d.m3) vals.push(d.m3); }
+  const lo = Math.min(...vals), hi = Math.max(...vals);
+  const l0 = Math.log10(lo) - 0.04, l1 = Math.log10(hi) + 0.05;
+  const y = v => MT + PH - (Math.log10(v) - l0) / (l1 - l0) * PH;
+  const t0 = view[0].t, t1 = view[view.length - 1].t;
+  const x = t => ML + (t - t0) / (t1 - t0) * PW;
+  xs = { x, y, t0, t1 };
+
+  // --- y gridlines: decades, plus half-decades when the span is short
+  const ticks = [];
+  for (let e = 1; e <= 6; e++) for (const m of [1, 2, 5]) {
+    const v = m * Math.pow(10, e);
+    if (v >= lo * 0.85 && v <= hi * 1.15) ticks.push(v);
+  }
+  const keep = (l1 - l0) > 1.4 ? ticks.filter(v => String(v)[0] === '1' || (l1 - l0) < 2.6) : ticks;
+  for (const v of keep) {
+    el('line', { x1: ML, x2: ML + PW, y1: y(v).toFixed(1), y2: y(v).toFixed(1), stroke: 'var(--grid)', 'stroke-width': 1 }, svg);
+    const lb = el('text', { x: ML - 9, y: (y(v) + 4).toFixed(1), class: 'tick', 'text-anchor': 'end' }, svg);
+    lb.textContent = v >= 1000 ? fmtEUR(v / 1000) + 'k $' : v + ' $';
+  }
+
+  // --- x ticks: years
+  const y0 = new Date(t0).getUTCFullYear(), y1 = new Date(t1).getUTCFullYear();
+  const step = (y1 - y0) > 9 ? 2 : 1;
+  for (let yr = Math.ceil(y0 / step) * step; yr <= y1; yr += step) {
+    const tt = Date.UTC(yr, 0, 1);
+    if (tt < t0 || tt > t1) continue;
+    el('line', { x1: x(tt).toFixed(1), x2: x(tt).toFixed(1), y1: MT, y2: MT + PH, stroke: 'var(--grid)', 'stroke-width': 1 }, svg);
+    const lb = el('text', { x: x(tt).toFixed(1), y: H - 8, class: 'tick', 'text-anchor': 'middle' }, svg);
+    lb.textContent = yr;
+  }
+  el('line', { x1: ML, x2: ML + PW, y1: MT + PH, y2: MT + PH, stroke: 'var(--axis)', 'stroke-width': 1 }, svg);
+
+  // --- band between the two moving averages
+  const seg = view.filter(d => d.m2 !== null && d.m3 !== null);
+  if (seg.length > 1) {
+    const up = seg.map(d => `${x(d.t).toFixed(1)},${y(d.m2).toFixed(1)}`);
+    const dn = seg.slice().reverse().map(d => `${x(d.t).toFixed(1)},${y(d.m3).toFixed(1)}`);
+    el('polygon', { points: up.concat(dn).join(' '), fill: 'var(--band)' }, svg);
+  }
+
+  const path = (key, color, width) => {
+    let d = '', pen = false;
+    for (const p of view) {
+      const v = p[key];
+      if (v === null || v === undefined) { pen = false; continue; }
+      d += (pen ? 'L' : 'M') + x(p.t).toFixed(1) + ',' + y(v).toFixed(1) + ' ';
+      pen = true;
+    }
+    if (d) el('path', { d, fill: 'none', stroke: color, 'stroke-width': width, 'stroke-linejoin': 'round', 'stroke-linecap': 'round' }, svg);
+  };
+  path('m3', 'var(--series-mm300)', 2);
+  path('m2', 'var(--series-mm200)', 2);
+  path('c', 'var(--series-price)', 2);
+
+  // --- weeks that closed inside the band
+  for (const d of view) {
+    if (!d.band) continue;
+    el('circle', { cx: x(d.t).toFixed(1), cy: y(d.c).toFixed(1), r: 4.5,
+      fill: 'var(--series-price)', stroke: 'var(--surface-1)', 'stroke-width': 2 }, svg);
+  }
+
+  // --- selective direct labels: the two structural lows, and the live values
+  const ann = (t, v, txt, note, dy, anchor) => {
+    if (t < t0 || t > t1) return;
+    const px = x(t), py = y(v);
+    el('line', { x1: px.toFixed(1), x2: px.toFixed(1), y1: (py + 7).toFixed(1), y2: (py + dy - 11).toFixed(1),
+      stroke: 'var(--axis)', 'stroke-width': 1 }, svg);
+    const a = el('text', { x: px, y: py + dy, class: 'dlabel', 'text-anchor': anchor || 'middle' }, svg);
+    a.textContent = txt;
+    if (note) {
+      const b = el('text', { x: px, y: py + dy + 14, class: 'dnote', 'text-anchor': anchor || 'middle' }, svg);
+      b.textContent = note;
+    }
+  };
+  ann(Date.UTC(2022, 10, 21), 16456, '16 456 $', '−9 % sous la MM 300', 40, 'middle');
+  ann(Date.UTC(2026, 5, 22), 59943, '59 943 $', 'creux 2026 à ce jour', 46, 'end');
+
+  // --- end-of-series values in the right gutter, pushed apart so none overlaps
+  const last = view[view.length - 1];
+  const ends = [
+    { v: last.c,  color: 'var(--series-price)' },
+    { v: last.m2, color: 'var(--series-mm200)' },
+    { v: last.m3, color: 'var(--series-mm300)' }
+  ].filter(e => e.v !== null && e.v !== undefined).sort((a, b) => b.v - a.v);
+  ends.forEach(e => { e.yv = y(e.v); e.ylab = y(e.v); });
+  for (let i = 1; i < ends.length; i++) {
+    if (ends[i].ylab - ends[i - 1].ylab < 15) ends[i].ylab = ends[i - 1].ylab + 15;
+  }
+  const lx = ML + PW;
+  for (const e of ends) {
+    if (Math.abs(e.ylab - e.yv) > 1.5) {
+      el('path', { d: `M${(lx + 5).toFixed(1)},${e.yv.toFixed(1)} L${(lx + 13).toFixed(1)},${e.ylab.toFixed(1)} L${(lx + 17).toFixed(1)},${e.ylab.toFixed(1)}`,
+        fill: 'none', stroke: 'var(--axis)', 'stroke-width': 1 }, svg);
+    }
+    el('circle', { cx: lx.toFixed(1), cy: e.yv.toFixed(1), r: 4,
+      fill: e.color, stroke: 'var(--surface-1)', 'stroke-width': 2 }, svg);
+    const g = el('text', { x: lx + 19, y: (e.ylab + 4).toFixed(1), class: 'dlabel' }, svg);
+    g.textContent = fmtEUR(e.v);
+  }
+
+  // --- hover layer
+  const cross = el('line', { x1: 0, x2: 0, y1: MT, y2: MT + PH, stroke: 'var(--axis)', 'stroke-width': 1, opacity: 0, id: 'cross' }, svg);
+  const dots = ['c', 'm2', 'm3'].map(k => el('circle', { r: 4.5, fill: 'var(--surface-1)', 'stroke-width': 2, opacity: 0, 'data-k': k }, svg));
+  dots[0].setAttribute('stroke', 'var(--series-price)');
+  dots[1].setAttribute('stroke', 'var(--series-mm200)');
+  dots[2].setAttribute('stroke', 'var(--series-mm300)');
+  el('rect', { x: 0, y: 0, width: W, height: H, fill: 'transparent', id: 'hit' }, svg);
+}
+
+function hover(ev) {
+  const svg = document.getElementById('chart'), card = document.getElementById('card'), tip = document.getElementById('tip');
+  const r = svg.getBoundingClientRect(), scale = W / r.width;
+  const px = (ev.clientX - r.left) * scale;
+  if (px < ML - 6 || px > ML + PW + 6) return hide();
+  const frac = (px - ML) / PW;
+  const t = xs.t0 + frac * (xs.t1 - xs.t0);
+  let i = Math.round((t - view[0].t) / 604800000);
+  i = Math.max(0, Math.min(view.length - 1, i));
+  if (i === tipIdx) return;
+  tipIdx = i;
+  const d = view[i], cx = xs.x(d.t);
+
+  svg.querySelector('#cross').setAttribute('opacity', 1);
+  svg.querySelector('#cross').setAttribute('x1', cx.toFixed(1));
+  svg.querySelector('#cross').setAttribute('x2', cx.toFixed(1));
+  svg.querySelectorAll('circle[data-k]').forEach(c => {
+    const v = d[c.getAttribute('data-k')];
+    if (v === null || v === undefined) return c.setAttribute('opacity', 0);
+    c.setAttribute('opacity', 1);
+    c.setAttribute('cx', cx.toFixed(1));
+    c.setAttribute('cy', xs.y(v).toFixed(1));
+  });
+
+  const row = (color, name, v) => v === null || v === undefined ? '' :
+    `<div class="row"><i><span style="width:10px;height:3px;border-radius:2px;background:${color};display:inline-block"></span>${name}</i><em>${fmtEUR(v)} $</em></div>`;
+  let extra = '';
+  if (d.m2 !== null && d.m3 !== null) {
+    const p2 = (d.c / d.m2 - 1) * 100, p3 = (d.c / d.m3 - 1) * 100;
+    const sg = n => (n >= 0 ? '+' : '−') + Math.abs(n).toFixed(1).replace('.', ',') + ' %';
+    extra = `<div class="band">${d.band ? '◆ dans la bande<br>' : ''}vs MM 200 : ${sg(p2)}<br>vs MM 300 : ${sg(p3)}</div>`;
+  }
+  tip.innerHTML = `<b>${fmtWeek(d.t)}</b>` +
+    row('var(--series-price)', 'Cours', d.c) +
+    row('var(--series-mm200)', 'MM 200', d.m2) +
+    row('var(--series-mm300)', 'MM 300', d.m3) + extra;
+  tip.style.opacity = 1;
+  const left = cx / scale;
+  const flip = left > r.width * 0.58;
+  tip.style.left = (flip ? left - tip.offsetWidth - 16 : left + 16) + 'px';
+  tip.style.top = Math.max(6, (ev.clientY - card.getBoundingClientRect().top) - tip.offsetHeight / 2) + 'px';
+}
+
+function hide() {
+  tipIdx = -1;
+  document.getElementById('tip').style.opacity = 0;
+  const svg = document.getElementById('chart');
+  const c = svg.querySelector('#cross');
+  if (c) c.setAttribute('opacity', 0);
+  svg.querySelectorAll('circle[data-k]').forEach(d => d.setAttribute('opacity', 0));
+}
+
+document.querySelectorAll('[data-range]').forEach(b => b.addEventListener('click', () => {
+  document.querySelectorAll('[data-range]').forEach(o => o.setAttribute('aria-pressed', o === b));
+  hide();
+  draw(b.dataset.range);
+}));
+document.getElementById('tableBtn').addEventListener('click', e => {
+  const on = e.target.getAttribute('aria-pressed') !== 'true';
+  e.target.setAttribute('aria-pressed', on);
+  e.target.textContent = on ? 'Masquer le tableau' : 'Voir le tableau';
+  document.getElementById('tableView').classList.toggle('hidden', !on);
+});
+const card = document.getElementById('card');
+card.addEventListener('mousemove', hover);
+card.addEventListener('mouseleave', hide);
+window.addEventListener('resize', () => hide());
+draw('all');
+</script>
+</body>
+</html>
