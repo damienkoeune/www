@@ -6,9 +6,7 @@ configuration:
   enablePopovers: true
   analytics: null
   locale: fr-FR
-  # Phase de test : URL GitHub Pages par projet. À remplacer par cogit.koeune.net
-  # (et à réactiver le plugin cname ci-dessous) lors du passage sur le domaine.
-  baseUrl: damienkoeune.github.io/www
+  baseUrl: cogit.koeune.net
   ignorePatterns:
     - private
     - templates
@@ -148,11 +146,9 @@ plugins:
     enabled: true
   - source: "@quartz-community/og-image"
     enabled: true
-  # Émet un fichier CNAME à partir du hostname de baseUrl. À laisser désactivé
-  # tant que baseUrl pointe sur damienkoeune.github.io, sinon GitHub Pages reçoit
-  # « damienkoeune.github.io » comme domaine personnalisé et refuse de servir le site.
+  # Émet le fichier CNAME (cogit.koeune.net) attendu par GitHub Pages pour le domaine personnalisé.
   - source: "@quartz-community/cname"
-    enabled: false
+    enabled: true
   - source: "@quartz-community/canvas-page"
     enabled: true
   - source: "@quartz-community/content-page"
