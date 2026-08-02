@@ -6,7 +6,7 @@ configuration:
   enablePopovers: true
   analytics: null
   locale: fr-FR
-  baseUrl: cogit.koeune.net
+  baseUrl: cogit.becoop.be
   ignorePatterns:
     - private
     - templates
