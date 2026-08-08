@@ -13,6 +13,12 @@ Vous utilisez déjà une IA dans une fenêtre de navigateur : vous posez une que
 
 ![Une fenêtre de notes et un terminal reliés au même dossier, les échanges allant dans les deux sens](https://www.becoop.be/web/image/3878-9f1b26aa70a30bbfab345b7b440558531ae4c18f/article-ia-qui-execute.svg)
 
+> [!tip] À retenir
+> - Un logiciel de notes et une IA qui partagent le même dossier : elle n'écrit plus des réponses à recopier, elle travaille dans vos fichiers.
+> - Le format Markdown d'Obsidian est du texte pur : stocké chez vous, lisible dans quinze ans, et le moins coûteux à faire lire par une IA.
+> - Le fichier de règles relu à chaque conversation est ce qui distingue un gadget d'un outil de travail — et il se dicte au fil de l'eau.
+> - Trois garde-fous non négociables : un historique de versions, aucune donnée sensible dans le dossier, une vérification du résultat final.
+
 Le scénario est toujours le même. Vous ouvrez une IA dans votre navigateur, vous décrivez votre problème, elle produit un beau paragraphe. Vous le sélectionnez, vous le copiez, vous ouvrez votre document, vous collez, vous reformatez. Le lendemain, même conversation depuis zéro : elle ne se souvient ni de votre structure, ni de vos habitudes, ni de ce qu'elle a écrit hier. **Elle conseille, vous exécutez.** Le travail que vous économisez en rédaction, vous le repayez en manutention.
 
 Le basculement tient à une idée simple : **donner à l'IA et à votre logiciel de notes le même dossier**. Pas une intégration, pas un abonnement supplémentaire — le même dossier sur votre disque dur. Ce que l'IA écrit apparaît dans vos notes. Ce que vous écrivez dans vos notes, l'IA le lit. C'est ainsi que travaille BeCoop, et cet article décrit l'installation exacte.
@@ -178,10 +184,4 @@ En contrepartie, elle rend un service qu'aucun abonnement ne remplace : elle abs
 
 Si le sujet vous intéresse mais que l'installation vous arrête, c'est l'objet même de nos [ateliers intelligence artificielle](https://www.becoop.be/ateliers-ia) : le niveau avancé consiste à monter ce dispositif sur votre machine, avec vos dossiers, vos règles et vos documents, et à repartir avec quelque chose qui tourne.
 
-> [!tip] À retenir
-> - Un logiciel de notes et une IA qui partagent le même dossier : elle n'écrit plus des réponses à recopier, elle travaille dans vos fichiers.
-> - Le format Markdown d'Obsidian est du texte pur : stocké chez vous, lisible dans quinze ans, et le moins coûteux à faire lire par une IA.
-> - Le fichier de règles relu à chaque conversation est ce qui distingue un gadget d'un outil de travail — et il se dicte au fil de l'eau.
-> - Trois garde-fous non négociables : un historique de versions, aucune donnée sensible dans le dossier, une vérification du résultat final.
-
-*Mis à jour via Claude le 08/08/2026 à 14:37*
+*Mis à jour via Claude le 08/08/2026 à 14:54*

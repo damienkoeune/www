@@ -13,6 +13,11 @@ Passer d'un fichier Excel à un logiciel de suivi du personnel, ce n'est pas gag
 
 ![Une grille de tableur surchargée d'un côté, des fiches ordonnées de l'autre](https://www.becoop.be/web/image/3880-4937e1cbdbaf49f7bc37002a102d4cac4aba6249/article-sortir-du-tableur.svg)
 
+> [!tip] À retenir
+> - Le tableur n'est pas le problème : il le devient quand il a des versions, un seul pilote et plus de réponses.
+> - On gagne une mémoire par travailleur, des réponses transversales et un accès maîtrisé aux données.
+> - On perd de la souplesse et du temps au démarrage : le vrai prix se compte en jours internes, pas en licence.
+
 Dans presque toutes les structures que nous visitons, le suivi du personnel vit dans un tableur. Un fichier par thème, parfois un onglet par année, souvent une couleur pour dire ce qui reste à faire. On le montre un peu gêné, comme un placard mal rangé. Il ne faudrait pas : ce fichier fonctionne, il a été construit par quelqu'un qui connaissait le métier, et il a tenu des années. Ce n'est pas un aveu de retard.
 
 La vraie question n'est donc pas de savoir si le tableur est bien ou mal. Elle est de savoir **à quel moment il coûte plus qu'il ne rapporte** — et ce qu'on accepte de perdre en le quittant.
@@ -70,9 +75,4 @@ Si vos réponses vous ramènent au tableur, gardez-le sans complexe et rangez-le
 
 C'est de ce constat qu'est né [Staff-Suite](https://www.becoop.be/staff-suite) : d'une entreprise d'insertion de plus de cent cinquante travailleurs qui ne retrouvait plus ses entretiens. Le logiciel y a été construit, utilisé en production pendant des années, puis repris ailleurs. Il ne fait pas tout, et il ne fera pas de vous une autre organisation. Il met l'histoire de chaque collaborateur sur une seule fiche — c'est déjà l'essentiel de ce que le tableur ne sait plus faire.
 
-> [!tip] À retenir
-> - Le tableur n'est pas le problème : il le devient quand il a des versions, un seul pilote et plus de réponses.
-> - On gagne une mémoire par travailleur, des réponses transversales et un accès maîtrisé aux données.
-> - On perd de la souplesse et du temps au démarrage : le vrai prix se compte en jours internes, pas en licence.
-
-*Mis à jour via Claude le 08/08/2026 à 14:37*
+*Mis à jour via Claude le 08/08/2026 à 14:54*

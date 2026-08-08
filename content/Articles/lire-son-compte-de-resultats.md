@@ -13,6 +13,12 @@ On vous tend six pages de chiffres avant une assemblée générale, et on vous d
 
 ![Un compte de résultats examiné à la loupe, et deux colonnes comparant les produits aux charges](https://www.becoop.be/web/image/3877-7e9453ce950f3b9bf09bb8ff23249504cb6b1e3f/article-compte-de-resultats.svg)
 
+> [!tip] À retenir
+> - Le bilan est une photo, le compte de résultats un film. Commencez par le résultat d'exploitation, pas par le résultat final.
+> - En titres-services, on ne pilote pas son prix — seulement ses heures. Le coût d'une heure a rejoint sa valeur de remboursement.
+> - L'écart entre heures payées et heures facturées ne figure sur aucune ligne : c'est pourtant le vrai indicateur de santé.
+> - Être bénéficiaire et ne pas savoir payer les salaires du mois n'a rien de contradictoire.
+
 Dans les assemblées générales auxquelles nous participons, il se passe presque toujours la même chose. Le trésorier commente ses tableaux pendant vingt minutes, et au moment du vote une main se lève pour demander « et donc, on va bien ? ». C'est la seule question qui compte, et c'est celle à laquelle six pages de chiffres ne répondent jamais toutes seules.
 
 La bonne nouvelle, c'est qu'on n'a pas besoin de savoir tenir une comptabilité pour lire un compte de résultats. Un comptable le fabrique ; vous, vous devez seulement savoir l'interroger. Voici comment nous procédons, dans cet ordre.
@@ -115,10 +121,4 @@ Aucune ne demande de savoir lire un bilan. Toutes obligent à sortir des génér
 
 C'est ce type de lecture que nous travaillons dans [nos formations à la gestion d'entreprise sociale](https://www.becoop.be/formations), avec les travailleurs eux-mêmes : non pas pour en faire des comptables, mais pour qu'ils comprennent d'où vient l'argent qui paie leur salaire, et ce qui le met en danger.
 
-> [!tip] À retenir
-> - Le bilan est une photo, le compte de résultats un film. Commencez par le résultat d'exploitation, pas par le résultat final.
-> - En titres-services, on ne pilote pas son prix — seulement ses heures. Le coût d'une heure a rejoint sa valeur de remboursement.
-> - L'écart entre heures payées et heures facturées ne figure sur aucune ligne : c'est pourtant le vrai indicateur de santé.
-> - Être bénéficiaire et ne pas savoir payer les salaires du mois n'a rien de contradictoire.
-
-*Mis à jour via Claude le 08/08/2026 à 14:37*
+*Mis à jour via Claude le 08/08/2026 à 14:54*

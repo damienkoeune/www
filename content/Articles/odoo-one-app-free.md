@@ -13,6 +13,11 @@ Odoo propose une application gratuite, sans limite de durée et sans limite d'ut
 
 ![Une seule application active et gratuite, les autres verrouillées derrière un abonnement par utilisateur](https://www.becoop.be/web/image/3879-17deecbfd4ecbad9e5d572efb40a9bb8a5e285df/article-odoo-one-app-free.svg)
 
+> [!tip] À retenir
+> - Une application, utilisateurs illimités, votre nom de domaine, sans limite de durée : de quoi tenir un site vitrine pour 0 €.
+> - Odoo compte les applications facturables, pas les modules : les dépendances sont offertes.
+> - La deuxième app fait payer tous les utilisateurs : 19,90 € par personne et par mois. Testez sur une copie de votre base.
+
 Commençons par le plus simple : **le site que vous êtes en train de lire tourne sur cette offre gratuite**. Pas une version d'essai, pas une remise de lancement — le plan à 0 €. C'est la meilleure réponse que nous puissions donner à la question, et elle nous a coûté quelques découvertes qu'autant partager.
 
 ## Ce que couvre réellement la gratuité
@@ -73,9 +78,4 @@ La contrepartie, elle, est nette : vous l'installez sur un serveur qui est le v�
 
 Nous [installons et paramétrons Odoo](https://www.becoop.be/applications-odoo) dans ces trois configurations, y compris celle qui ne nous rapporte rien : si votre besoin tient dans l'offre gratuite, nous vous le dirons.
 
-> [!tip] À retenir
-> - Une application, utilisateurs illimités, votre nom de domaine, sans limite de durée : de quoi tenir un site vitrine pour 0 €.
-> - Odoo compte les applications facturables, pas les modules : les dépendances sont offertes.
-> - La deuxième app fait payer tous les utilisateurs : 19,90 € par personne et par mois. Testez sur une copie de votre base.
-
-*Mis à jour via Claude le 08/08/2026 à 14:37*
+*Mis à jour via Claude le 08/08/2026 à 14:54*
