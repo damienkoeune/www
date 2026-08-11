@@ -142,7 +142,7 @@ Et pendant la conversation, en tapant simplement la commande à la place d'une p
 /compact    résumer la conversation pour continuer plus léger
 /clear      repartir à zéro, pour changer complètement de sujet
 /rewind     revenir en arrière, fichiers et conversation compris
-/cost       ce que la session a consommé
+/status     l'état de la session : compte, modèle, connexions, consommation
 /exit       quitter
 ```
 
@@ -184,4 +184,4 @@ En contrepartie, elle rend un service qu'aucun abonnement ne remplace : elle abs
 
 Si le sujet vous intéresse mais que l'installation vous arrête, c'est l'objet même de nos [ateliers intelligence artificielle](https://www.becoop.be/ateliers-ia) : le niveau avancé consiste à monter ce dispositif sur votre machine, avec vos dossiers, vos règles et vos documents, et à repartir avec quelque chose qui tourne.
 
-*Mis à jour via Claude le 08/08/2026 à 14:54*
+*Mis à jour via Claude le 11/08/2026 à 11:17*
